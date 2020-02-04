@@ -8,19 +8,28 @@ namespace Task5
 {
     class Program
     {
+        public static bool IsEmpty<T>(List<T> list)
+        {
+            if (list == null)
+            {
+                return true;
+            }
+
+            return !list.Any();
+        }
         static void adding_product(List<Product> list)
         {
-            WriteLine("Type a name of product: ");
+            WriteLine("Enter a name of product: ");
             string name = ReadLine();
             float cost = 0;
-            WriteLine("Type a cost of product: ");
+            WriteLine("Enter a cost of product: ");
             try
             {
                 cost = float.Parse(ReadLine());
             }
             catch (System.FormatException)
             {
-                WriteLine("You've pressed a wrong value.");
+                WriteLine("You've Entered a wrong value.");
             }
             Product p1 = new Product(name, cost);
             list.Add(p1);
@@ -32,11 +41,11 @@ namespace Task5
             WriteLine("Welcome to Abbas's Grocery Shop!");           
             while (turnon)
             {
-                WriteLine("Press 1 to add product to shop.\n" +
-                    "Press 2 to remove a product\n"+
-                "Press 3 to see a list of products.\n" +
-                "Press 4 to sort a list.\n" +
-                "Press 0 to close a program.");
+                WriteLine("Enter 1 to add product to shop.\n" +
+                    "Enter 2 to remove a product\n"+
+                "Enter 3 to see a list of products.\n" +
+                "Enter 4 to sort a list.\n" +
+                "Enter 0 to close a program.");
                 int button = 0;
                 try
                 {
@@ -44,7 +53,7 @@ namespace Task5
                 }                  
                 catch(System.FormatException)
                 {
-                    WriteLine("You've pressed a wrong value.");
+                    WriteLine("You've Entered a wrong value.");
                 }            
                 switch (button)
                 {
@@ -61,10 +70,19 @@ namespace Task5
                         break;
                     case 3:
                         int counter = 0;
-                        foreach (Product item in products_list)
-                        {                         
-                            Console.WriteLine("index - "+counter + " " + item.product_name + " - " + item.product_cost);
-                            counter++;
+                        bool isEmpty = IsEmpty(products_list);
+
+                        if (isEmpty)
+                        {
+                            Console.WriteLine("List is Empty");
+                        }
+                        else
+                        {
+                            foreach (Product item in products_list)
+                            {
+                                Console.WriteLine("index - " + counter + " " + item.product_name + " - " + item.product_cost);
+                                counter++;
+                            }
                         }
                         break;
                     case 4:
@@ -76,7 +94,7 @@ namespace Task5
                             Console.WriteLine(item.product_cost + " - " + item.product_name);
                         break;
                     default:
-                        WriteLine("You've pressed a wrong button");
+                        WriteLine("You've Entered a wrong button");
                         break;
                 }
             }
