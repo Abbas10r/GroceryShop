@@ -38,14 +38,17 @@ namespace Task5
         {
             bool turnon=true;
             List<Product> products_list = new List<Product>();
-            WriteLine("Welcome to Abbas's Grocery Shop!");           
+            WriteLine("          Welcome to Abbas's Grocery Shop!");
+            WriteLine("         ---------------------------------");
             while (turnon)
             {
-                WriteLine("Enter 1 to add product to shop.\n" +
-                    "Enter 2 to remove a product\n"+
-                "Enter 3 to see a list of products.\n" +
-                "Enter 4 to sort a list.\n" +
-                "Enter 0 to close a program.");
+                WriteLine("          Enter 1 to add product to shop.\n" +
+                    "          Enter 2 to remove a product\n"+
+                "          Enter 3 to see a list of products.\n" +
+                "          Enter 4 to sell a product.\n"+
+                "          Enter 5 to sort a list.\n" +
+                "          Enter 6 to check a cashbox\n" +
+                "          Enter 0 to close a program.");
                 int button = 0;
                 try
                 {
@@ -86,6 +89,11 @@ namespace Task5
                         }
                         break;
                     case 4:
+                        WriteLine("Enter index of a product");
+                        int i = int.Parse(ReadLine());
+                        GroceryStore.sell(products_list, i);
+                        break;
+                    case 5:
                         var byCost = from u in products_list
                                      orderby u.product_cost descending //from higher to lower. Can remove "descending" for reverse sort
                                      select u;
@@ -93,11 +101,15 @@ namespace Task5
                         foreach (Product item in byCost)
                             Console.WriteLine(item.product_cost + " - " + item.product_name);
                         break;
+                    case 6:
+                        WriteLine($"Money amount in cashbox - {GroceryStore.cash}");
+                        break;
                     default:
                         WriteLine("You've Entered a wrong button");
                         break;
                 }
             }
+            WriteLine(GroceryStore.cash);
             
         }
     }
