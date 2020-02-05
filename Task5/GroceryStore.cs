@@ -10,8 +10,21 @@ namespace Task5
         static public float cash=0;        
         public static void sell(List<Product> list,int index)
         {
-            cash+=list[index].product_cost;
-            list.RemoveAt(index);
+            try
+            {
+                cash += list[index].product_cost;
+            }         
+            catch(System.ArgumentOutOfRangeException)
+            {
+                WriteLine("----------------");
+            }
+            try
+            { list.RemoveAt(index); }
+            catch(System.ArgumentOutOfRangeException)
+            {
+                WriteLine("There's no products");
+            }
+            
         }
     }
 

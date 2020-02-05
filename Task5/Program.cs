@@ -69,7 +69,14 @@ namespace Task5
                     case 2:
                         WriteLine("Enter index of a product: ");
                         int index = ToInt32(ReadLine());
-                        products_list.RemoveAt(index);
+                        try
+                        {
+                            products_list.RemoveAt(index);
+                        }
+                        catch (System.ArgumentOutOfRangeException)
+                        {
+                            WriteLine("There's no products");
+                        }
                         break;
                     case 3:
                         int counter = 0;
@@ -108,9 +115,7 @@ namespace Task5
                         WriteLine("You've Entered a wrong button");
                         break;
                 }
-            }
-            WriteLine(GroceryStore.cash);
-            
+            }            
         }
     }
 }
