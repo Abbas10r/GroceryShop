@@ -17,6 +17,21 @@ namespace Task5
 
             return !list.Any();
         }
+        //--------------------------------------------------------------------------------------------------
+        static void delete_product(List<Product> list)
+        {
+            WriteLine("Enter index of a product: ");
+            int index = ToInt32(ReadLine());
+            try
+            {
+                list.RemoveAt(index);
+            }
+            catch (System.ArgumentOutOfRangeException)
+            {
+                WriteLine("There's no products");
+            }
+        }
+        //-----------------------------------------------------------------------------------------------
         static void adding_product(List<Product> list)
         {
             WriteLine("Enter a name of product: ");
@@ -31,11 +46,70 @@ namespace Task5
             {
                 WriteLine("You've Entered a wrong value.");
             }
-            Product p1 = new Product(name, cost);
-            list.Add(p1);
+            WriteLine("Enter amount of products ");
+            int amount = 0;
+            try
+            {
+                amount = ToInt32(ReadLine());
+            }
+            catch(System.FormatException)
+            {
+                WriteLine("You've entered a wrong value");
+            }          
+            for(int i=0;i<amount;i++)
+            {
+                string nname = $"{name}({i})";
+                Product p1 = new Product(nname, cost);
+                list.Add(p1);
+            }           
         }
-        static void Main(string[] args)
+        //----------------------------------------------------------------------------------------------
+        static void show_list(List<Product> list)
         {
+            int counter = 0;
+            bool isEmpty = IsEmpty(list);
+
+            if (isEmpty)
+            {
+                Console.WriteLine("List is Empty");
+            }
+            else
+            {
+                foreach (Product item in list)
+                {
+                    Console.WriteLine("index - " + counter + " " + item.product_name + " - " + item.product_cost+" som");
+                    counter++;
+                }
+            }
+        }
+        //----------------------------------------------------------------------------------------------
+        static void sort_list(List<Product> list)
+        {
+            var byCost = from u in list
+                         orderby u.product_cost descending //from higher to lower. Can remove "descending" for reverse sort
+                         select u;
+            Console.WriteLine("Ordered by cost");
+            foreach (Product item in byCost)
+                Console.WriteLine(item.product_cost + " som - " + item.product_name);
+        }
+        //----------------------------------------------------------------------------------------------
+        static void sell_product(List<Product> list)
+        {
+            int i = 0;
+            WriteLine("Enter index of a product");
+            try
+            {
+                i = int.Parse(ReadLine());
+            }                      
+            catch(System.FormatException)
+            {
+                WriteLine("You've intered a wrong value");
+            }
+            GroceryStore.sell(list, i);
+        }
+        //----------------------------------------------------------------------------------------------
+        static void Main(string[] args)
+        {                      
             bool turnon=true;
             List<Product> products_list = new List<Product>();
             WriteLine("          Welcome to Abbas's Grocery Shop!");
@@ -67,55 +141,25 @@ namespace Task5
                         adding_product(products_list);
                         break;
                     case 2:
-                        WriteLine("Enter index of a product: ");
-                        int index = ToInt32(ReadLine());
-                        try
-                        {
-                            products_list.RemoveAt(index);
-                        }
-                        catch (System.ArgumentOutOfRangeException)
-                        {
-                            WriteLine("There's no products");
-                        }
+                        delete_product(products_list);
                         break;
                     case 3:
-                        int counter = 0;
-                        bool isEmpty = IsEmpty(products_list);
-
-                        if (isEmpty)
-                        {
-                            Console.WriteLine("List is Empty");
-                        }
-                        else
-                        {
-                            foreach (Product item in products_list)
-                            {
-                                Console.WriteLine("index - " + counter + " " + item.product_name + " - " + item.product_cost);
-                                counter++;
-                            }
-                        }
+                        show_list(products_list);
                         break;
                     case 4:
-                        WriteLine("Enter index of a product");
-                        int i = int.Parse(ReadLine());
-                        GroceryStore.sell(products_list, i);
+                        sell_product(products_list);
                         break;
                     case 5:
-                        var byCost = from u in products_list
-                                     orderby u.product_cost descending //from higher to lower. Can remove "descending" for reverse sort
-                                     select u;
-                        Console.WriteLine("Ordered by cost");
-                        foreach (Product item in byCost)
-                            Console.WriteLine(item.product_cost + " - " + item.product_name);
+                        sort_list(products_list);
                         break;
                     case 6:
-                        WriteLine($"Money amount in cashbox - {GroceryStore.cash}");
+                        WriteLine($"Money amount in cashbox - {GroceryStore.cash} som");
                         break;
                     default:
                         WriteLine("You've Entered a wrong button");
                         break;
                 }
-            }            
+            }         
         }
     }
 }
